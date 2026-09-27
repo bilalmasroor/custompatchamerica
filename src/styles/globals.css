@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+/* Match plain :hover (Tailwind v4 defaults to hover-capable devices only). */
+@custom-variant hover (&:hover);
+
+@theme inline {
+  --font-sans: var(--font-poppins), sans-serif;
+}
+
+@theme {
+  --color-navy: #061b3d;
+  --color-brand-red: #e51c2a;
+  --font-hand: cursive;
+}
