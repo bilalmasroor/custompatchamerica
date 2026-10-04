@@ -1,0 +1,19 @@
+.track {
+  animation: marquee-scroll 42s linear infinite;
+}
+
+.viewport:hover .track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-scroll {
+  to {
+    transform: translateX(-25%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+}

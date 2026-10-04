@@ -1,43 +1,74 @@
-import Button from "./Button";
-import Stars from "./Stars";
-import { heroPerks } from "@/data/homepage";
+"use client";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
-const actionClass = "h-[clamp(48px,3.2vw,56px)] px-[clamp(20px,1.8vw,30px)] text-[clamp(14px,.9vw,17px)] max-[390px]:px-[13px]";
+const slides = [
+  { name: "Embroidered Patches", image: "/images/categories/EMBROIDERY.png" },
+  { name: "PVC Patches", image: "/images/categories/PVC.png" },
+  { name: "Woven Patches", image: "/images/categories/WOVEN.png" },
+  { name: "Leather Patches", image: "/images/categories/LEATHER.png" },
+  { name: "Chenille Patches", image: "/images/categories/CHENILLE.png" },
+] as const;
+const perks = [
+  { label: "Free Shipping", first: "Free", second: "Shipping", icon: "shipping" },
+  { label: "12-Hour Mockup", first: "12-Hour", second: "Mockup", icon: "mockup" },
+  { label: "7–12 Day Turnaround", first: "7–12 Day", second: "Turnaround", icon: "time" },
+] as const;
+
+function PerkIcon({ name }: { name: (typeof perks)[number]["icon"] }) {
+  const props = { fill: "none", stroke: "currentColor", strokeWidth: 1.5, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, className: "h-full w-full", "aria-hidden": true as const };
+  if (name === "shipping") return <svg viewBox="0 0 28 24" {...props}><path d="M3 7.5h11.5V17H3zM14.5 11h4.5l3.5 3v3h-8M1 10h2.2M1 12.5h2.2M1 15h2.2" /><circle cx="7.5" cy="18.5" r="1.5" /><circle cx="19" cy="18.5" r="1.5" /></svg>;
+  if (name === "mockup") return <svg viewBox="0 0 24 24" {...props}><path d="M9 4.2 12 6.2l3-2M8.2 5.4 4.5 8.2 6.8 10.4V19.2a1 1 0 0 0 1 1h8.4a1 1 0 0 0 1-1v-8.8l2.3-2.2L15.8 5.4M9.6 13.8h4.8" /></svg>;
+  return <svg viewBox="0 0 24 24" {...props}><circle cx="12" cy="12" r="8" /><path d="M12 7.5v5l3.2 1.8" /></svg>;
+}
 
 export default function Hero() {
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [timerKey, setTimerKey] = useState(0);
+  useEffect(() => {
+    const timer = window.setInterval(() => setActiveSlide((current) => (current + 1) % slides.length), 4500);
+    return () => window.clearInterval(timer);
+  }, [timerKey]);
+  function selectSlide(index: number) {
+    setActiveSlide(index);
+    setTimerKey((key) => key + 1);
+  }
+
   return (
-    <section className="relative isolate flex min-h-[clamp(640px,43.75vw,840px)] items-center bg-[#041a38] bg-[url(/hero.png)] bg-cover bg-[position:center_10%] bg-no-repeat text-white before:absolute before:inset-0 before:-z-10 before:bg-[linear-gradient(90deg,#031b40_0%,#052657ed_34%,#061a3a4d_60%,#0002_100%)] max-[1100px]:min-h-[640px] max-[900px]:min-h-[590px] max-[650px]:min-h-0 max-[650px]:bg-[position:62%_50%] max-[650px]:before:bg-[linear-gradient(90deg,#031b40f7_0%,#052657e8_55%,#061a3a80_100%)]">
-      <div className="mx-auto w-full max-w-[1360px] px-[clamp(28px,5vw,96px)] py-[clamp(64px,7vw,110px)] max-[900px]:px-[5%] max-[650px]:max-w-[460px] max-[650px]:px-[22px] max-[650px]:py-[50px] max-[650px]:pb-[27px]">
-        <div className="w-[44%] max-[900px]:w-[56%] max-[650px]:w-full">
-          <span className="text-[clamp(13px,1vw,19px)] tracking-[.04em] text-[#18a8e4]">PREMIUM CUSTOM PATCHES</span>
-          <h1 className="mt-[clamp(16px,1.5vw,28px)] mb-[clamp(14px,1.4vw,25px)] text-[length:clamp(56px,4.2vw,80px)] leading-[.98] tracking-[-.045em] text-[#f4f7ff] max-[900px]:text-[clamp(48px,6vw,66px)] max-[650px]:text-[55px] max-[390px]:text-[48px]">
-            Your Idea.
-            <br />
-            <em className="text-brand-red not-italic">Our Stitch.</em>
-          </h1>
-          <p className="mb-[clamp(22px,2vw,36px)] max-w-[540px] text-[clamp(16px,1.05vw,20px)] leading-[1.5] text-[#d4e3f5] max-[650px]:max-w-[330px] max-[650px]:text-[14px]">
-            High-quality custom patches for businesses, teams, events, and brands across the USA.
-          </p>
-          <ul className="grid grid-cols-[repeat(3,minmax(0,1fr))] gap-x-[clamp(16px,1.6vw,30px)] gap-y-[clamp(12px,1vw,20px)] text-[clamp(12px,.78vw,15px)] text-[#c9e3fa] max-[650px]:grid-cols-[repeat(2,max-content)] max-[650px]:gap-y-[10px] max-[390px]:gap-[9px] max-[390px]:text-[9px]">
-            {heroPerks.map(({ icon, title }) => (
-              <li key={title} className="first-letter:text-[#10c2f5]">{icon} &nbsp;{title}</li>
-            ))}
-          </ul>
-          <div className="mt-[clamp(28px,2.4vw,44px)] flex gap-[clamp(12px,1vw,20px)] max-[650px]:mt-[22px]">
-            <Button className={actionClass}>Get a Free Quote</Button>
-            <Button outline className={actionClass}>See Our Work</Button>
+    <section className="relative overflow-x-clip bg-white px-3 pt-[110px] pb-10 text-navy sm:px-4 lg:px-5 max-[767px]:pt-8 max-[767px]:pb-6" aria-labelledby="hero-heading">
+      <div className="mx-auto max-w-[1600px]">
+        <div className="relative isolate min-h-[670px] rounded-[34px] shadow-[0_20px_60px_#061b3d13] max-[1199px]:min-h-[640px] max-[767px]:flex max-[767px]:min-h-0 max-[767px]:flex-col max-[767px]:rounded-[24px]">
+          <div className="absolute inset-0 overflow-hidden rounded-[34px] bg-gradient-to-r from-[#103968] via-[#28639a] to-[#79a9d1] max-[767px]:rounded-[24px]" aria-hidden="true" />
+          <div className="relative z-20 flex h-[670px] w-[42%] flex-col justify-center pr-0 pl-[clamp(38px,4.6vw,78px)] max-[1199px]:h-[640px] max-[1199px]:w-[49%] max-[1199px]:pl-[38px] max-[767px]:h-auto max-[767px]:w-full max-[767px]:px-6 max-[767px]:pt-12 max-[767px]:pb-9 max-[390px]:px-5">
+            <h1 id="hero-heading" className="max-w-[680px] text-[clamp(42px,3.5vw,54px)] leading-[1.12] font-extrabold tracking-[-.045em] text-white max-[1100px]:text-[clamp(39px,4vw,46px)] max-[767px]:text-[clamp(37px,8vw,52px)]">
+              Custom Patches<br />in the USA Made<br />Exactly Your Way
+            </h1>
+            <p className="mt-6 max-w-[520px] text-[clamp(15px,1.1vw,18px)] leading-[1.65] text-white/90 max-[767px]:mt-5 max-[767px]:text-[15px]">
+              Premium custom patches for brands, teams, uniforms, events, and businesses across the United States. We focus on every detail, from material quality to color accuracy, with reliable nationwide delivery.
+            </p>
+            <a href="#quote" className="mt-8 inline-flex min-h-14 w-fit items-center justify-center rounded-[10px] bg-brand-red px-8 text-[16px] font-bold text-white shadow-[0_10px_24px_#e51c2a35] transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-red max-[767px]:mt-7">Get a Free Mockup</a>
           </div>
-          <div className="mt-[clamp(26px,2.2vw,40px)] flex items-center gap-[clamp(12px,1vw,20px)] max-[650px]:mt-[24px]">
-            <span className="mr-[5px] text-[clamp(24px,1.8vw,34px)] tracking-[-8px]" aria-hidden="true">👩🏻‍🦰👨🏻👩🏽👨🏼</span>
-            <Stars />
-            <small className="text-[clamp(11px,.7vw,14px)] leading-[1.45] text-[#e0eafa]">
-              Trusted by <b>10,000+</b> customers
-              <br />
-              across the United States
-            </small>
+          <div className="absolute bottom-0 left-[42%] z-10 h-[112%] w-auto max-[1199px]:left-[47%] max-[1199px]:h-[105%] max-[767px]:relative max-[767px]:bottom-auto max-[767px]:left-auto max-[767px]:h-[400px] max-[767px]:w-full max-[767px]:overflow-hidden max-[480px]:h-[360px]">
+            <Image src="/hero.png" alt="Woman wearing a custom patch on her jacket" width={1024} height={1536} priority sizes="(max-width: 767px) 320px, 540px" className="h-full w-auto max-w-none object-contain max-[767px]:absolute max-[767px]:bottom-0 max-[767px]:left-1/2 max-[767px]:h-full max-[767px]:-translate-x-1/2" />
+          </div>
+          <ul className="absolute top-[105px] right-[clamp(8px,1vw,24px)] z-20 flex w-[clamp(215px,18.5vw,340px)] items-stretch max-[1199px]:top-auto max-[1199px]:right-auto max-[1199px]:bottom-[38px] max-[1199px]:left-[38px] max-[1199px]:w-[clamp(240px,30vw,330px)] max-[767px]:relative max-[767px]:bottom-auto max-[767px]:left-auto max-[767px]:w-full max-[767px]:px-6 max-[767px]:py-7 max-[390px]:px-4" aria-label="Benefits">
+            {perks.map((perk) => <li key={perk.label} className="flex min-w-0 flex-1 flex-col items-center gap-[clamp(5px,.65vw,11px)] border-r border-white/60 px-[clamp(2px,.35vw,6px)] text-center text-[clamp(12px,.95vw,18px)] leading-[1.2] font-semibold text-white last:border-r-0">
+              <span className="flex size-[clamp(24px,2vw,36px)] shrink-0 items-center justify-center text-white"><PerkIcon name={perk.icon} /></span>
+              <span>{perk.first}<br />{perk.second}</span>
+            </li>)}
+          </ul>
+          <div className="absolute right-[clamp(32px,4vw,68px)] bottom-[30px] z-30 w-[clamp(205px,19vw,275px)] rounded-[20px] border border-[#e1eaf5] bg-white p-4 text-center shadow-[0_16px_45px_#061b3d35] max-[1100px]:right-6 max-[1100px]:w-[205px] max-[767px]:relative max-[767px]:right-auto max-[767px]:bottom-auto max-[767px]:mx-auto max-[767px]:mb-8 max-[767px]:w-[min(280px,calc(100%-48px))]" aria-label="Patch styles">
+            <div className="relative aspect-[1.25/1] overflow-hidden rounded-[12px] bg-[#f2f6fc]">
+              {slides.map((slide, index) => <Image key={slide.name} src={slide.image} alt={index === activeSlide ? slide.name : ""} aria-hidden={index !== activeSlide} fill sizes="(max-width: 767px) 248px, 250px" className={`object-contain p-2 transition-all duration-500 motion-reduce:transition-none ${index === activeSlide ? "translate-x-0 opacity-100" : "translate-x-2 opacity-0"}`} />)}
+            </div>
+            <strong className="mt-3 block text-[15px] font-bold text-navy" aria-live="polite">{slides[activeSlide].name}</strong>
+            <div className="mt-3 flex justify-center gap-2" role="group" aria-label="Choose a patch style">
+              {slides.map((slide, index) => <button key={slide.name} type="button" onClick={() => selectSlide(index)} aria-label={slide.name} aria-pressed={index === activeSlide} className={`size-2.5 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red ${index === activeSlide ? "bg-brand-red" : "bg-[#b8c9df] hover:bg-[#1765ad]"}`} />)}
+            </div>
           </div>
         </div>
       </div>
     </section>
   );
 }
+

@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import Benefits from "@/components/Benefits";
+import MarqueeStrip from "@/components/MarqueeStrip";
 import Categories from "@/components/Categories";
 import Story from "@/components/Story";
 import Process from "@/components/Process";
@@ -16,10 +16,10 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
-        <Benefits />
+        <MarqueeStrip />
         <Categories />
-        <Story />
         <Process />
+        <Story />
         <Industries />
         <Testimonials />
         <QuoteSection />
