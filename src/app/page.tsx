@@ -4,6 +4,7 @@ import MarqueeStrip from "@/components/MarqueeStrip";
 import Categories from "@/components/Categories";
 import Story from "@/components/Story";
 import Process from "@/components/Process";
+import WhyChooseUs from "@/components/WhyChooseUs";
 import Industries from "@/components/Industries";
 import Testimonials from "@/components/Testimonials";
 import QuoteSection from "@/components/QuoteSection";
@@ -19,6 +20,7 @@ export default function Home() {
         <MarqueeStrip />
         <Categories />
         <Process />
+        <WhyChooseUs />
         <Story />
         <Industries />
         <Testimonials />
